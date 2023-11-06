@@ -85,11 +85,6 @@ print:
     mov rdx, calcStrLen
     syscall
 
-
-exit:
-    mov rax, 60
-    xor rdi, rdi
-
 exit:
     mov rax, 60
     xor rdi, rdi
