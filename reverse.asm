@@ -1,5 +1,9 @@
+;this is a commented version so that we remember what we are doing
+;Sandra Deutl and Katheryne Lochart
+
 section .data
 
+;get input from user
 wordPrompt:     db "Please enter the text: ", 0
 wordPromptLen:  equ $- wordPrompt
 
@@ -18,6 +22,7 @@ section .text
 global main
 
 main:
+    ;store user given string
     mov rax, 1
     mov rdi, 1
     mov rsi, wordPrompt 
