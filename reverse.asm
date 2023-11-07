@@ -1,5 +1,6 @@
 ;this is a commented version so that we remember what we are doing
 ;Sandra Deutl and Katheryne Lochart
+; remember to check formatting before submitting
 
 section .data
 
