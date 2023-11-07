@@ -46,6 +46,7 @@ promptWord:
 checkWord:
     cmp rax, 8 ;this is the size
     jl  promptWord
+    mov r12, rax ;can you move this into something?
 
 promptNum:
     mov rax, 1
@@ -60,7 +61,21 @@ promptNum:
     mov rdx, 2
     syscall
 
-print:
+convertNum:
+    mov r8, [num] ;moving to empty register
+    sub r8, 48 
+    imul r8, 10
+    add r9, r8 ;r9 stores temp number
+    inc rsi ;moving to next digit
+    mov r8, [num]
+    sub r8, 48
+    add r9, r8
+    cmp r9, 2
+    jl promptNum
+    cmp r9, r12 ;can you do this?
+    jg promptNum
+
+printUnedited:
     mov rax, 1
     mov rdi, 1
     mov rsi, resultStr
@@ -72,6 +87,8 @@ print:
     mov rsi, string
     mov rdx, 64
     syscall
+
+printEdited:
 
     mov rax, 1
     mov rdi, 1
