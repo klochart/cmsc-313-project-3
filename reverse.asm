@@ -64,6 +64,8 @@ promptNum:
     syscall
 
 ; be careful of memory allocated, mov to r8 and 10 to al or vice versa
+; not enough memory allocated, 
+; be mindful of what number you read first and if there should be a check for the next number
 convertNum:
     mov r8b, [num] ;moving to empty register
     sub r8, 48 
