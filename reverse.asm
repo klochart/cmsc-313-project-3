@@ -29,7 +29,7 @@ section .text
 global main
 
 main:
-    xor r8b, r8b
+    xor r8, r8
 
 promptWord:
     mov rax, 1
@@ -44,6 +44,7 @@ promptWord:
     mov rdx, 64
     syscall
 
+;something weird below
 checkWord:
     cmp rax, 8 ;this is the size
     jl  promptWord
@@ -63,7 +64,7 @@ promptNum:
     syscall
 
 convertNum:
-    mov r8, [num] ;moving to empty register
+    mov r8b, [num] ;moving to empty register
     sub r8, 48 
     imul r8, 10
     add r9, r8 ;r9 stores temp number
