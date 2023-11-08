@@ -69,21 +69,23 @@ promptNum:
 ; not enough memory allocated, 
 ; be mindful of what number you read first and if there should be a check for the next number
 checkNum:
+    xor r9b, r9b
+    mov r10, num
     dec rax
     cmp rax, 1
     jg convertNumDouble
     jmp convertNumSingle
 
 convertNumDouble:
-    mov r8b, byte[rax] ;moving to empty register
+    mov r8b, [r10] ;moving to empty register
     sub r8b, 48
     mov al, 10
-    mul r8b
-    add r9b, r8b ;r9 stores temp number
-    inc rax ;moving to next digit
+    mul r8
+    add r9, rax ;r9 stores temp number
+    inc r10 ;moving to next digit
 
 convertNumSingle:
-    mov r8b, byte[rax]
+    mov r8b, [r10]
     sub r8b, 48
     add r9b, r8b
     cmp r9b, 2
