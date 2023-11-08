@@ -29,7 +29,8 @@ section .text
 global main
 
 main:
-    xor r8, r8
+    xor r8b, r8b
+    xor r9b, r9b
 
 promptWord:
     mov rax, 1
@@ -46,6 +47,7 @@ promptWord:
 
 ;something weird below
 checkWord:
+    dec rax ;for new line key
     cmp rax, 8 ;this is the size
     jl  promptWord
     mov r12, rax ;can you move this into something?
@@ -66,18 +68,27 @@ promptNum:
 ; be careful of memory allocated, mov to r8 and 10 to al or vice versa
 ; not enough memory allocated, 
 ; be mindful of what number you read first and if there should be a check for the next number
-convertNum:
-    mov r8b, [num] ;moving to empty register
-    sub r8, 48 
-    imul r8, 10
-    add r9, r8 ;r9 stores temp number
-    inc rsi ;moving to next digit
-    mov r8, [num]
-    sub r8, 48
-    add r9, r8
-    cmp r9, 2
+checkNum:
+    dec rax
+    cmp rax, 1
+    jg convertNumDouble
+    jmp convertNumSingle
+
+convertNumDouble:
+    mov r8b, byte[rax] ;moving to empty register
+    sub r8b, 48
+    mov al, 10
+    mul r8b
+    add r9b, r8b ;r9 stores temp number
+    inc rax ;moving to next digit
+
+convertNumSingle:
+    mov r8b, byte[rax]
+    sub r8b, 48
+    add r9b, r8b
+    cmp r9b, 2
     jl promptNum
-    cmp r9, r12 ;can you do this?
+    cmp r9b, r12b ;can you do this?
     jg promptNum
 
 printUnedited:
