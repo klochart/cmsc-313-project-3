@@ -63,6 +63,7 @@ promptNum:
     mov rdx, 2
     syscall
 
+; be careful of memory allocated, mov to r8 and 10 to al or vice versa
 convertNum:
     mov r8b, [num] ;moving to empty register
     sub r8, 48 
