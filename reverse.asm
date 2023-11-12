@@ -1,6 +1,4 @@
-;this is a commented version so that we remember what we are doing
 ;Sandra Deutl and Katheryne Lochart
-; remember to check formatting before submitting
 
 section .data
 
@@ -115,17 +113,17 @@ printEdited:
 
     mov r8b, r9b
     mov r13, string
-    add r13, r9         ;i wanted to do r9b but it won't let me
+    add r13, r9         ;r9 instead of r9b to match operands
 
 printChar1:
-    mov rax, 1
+    mov rax, 1          ;this part prints the first reversed part
     mov rdi, 1
     mov rsi, r13
-    mov rdx, 1
+    mov rdx, 1          ;prints only one byte aka one character
     syscall
 
 moveThrough1:
-    dec r13
+    dec r13             ;this part moves through the first reversed part to print a character at a time
     dec r8b
     cmp r8b, 0          ;1 & not 0, bc it'll print char one more time after jumping
     jge printChar1      ;if no jump, move to end
@@ -138,7 +136,7 @@ printChar2:
     mov rax, 1
     mov rdi, 1
     mov rsi, r13
-    mov rdx, 1          ;prints only one byte aka one character
+    mov rdx, 1        
     syscall
 
 moveThrough2:
