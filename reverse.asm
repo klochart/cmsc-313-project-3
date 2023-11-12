@@ -1,11 +1,12 @@
 ;Sandra Deutl and Katheryne Lochart
+;CMSC313 Project 3
 
 section .data
 
 wordPrompt:     db "Please enter the text: ", 0
 wordPromptLen:  equ $- wordPrompt
 
-numPrompt:      db "Enter a number between 2 and the total number of characters in the string ", 0
+numPrompt:      db "Enter a number between 2 and the total number of characters in the string: ", 0
 numPromptLen:   equ $- numPrompt
 
 resultStr:      db "Unedited String: ", 0
@@ -19,7 +20,6 @@ newLine:        db 10
 section .bss
 
 string:         resb 100
-strLen:         resb 3
 num:            resb 3
 
 section .text
@@ -28,7 +28,9 @@ global main
 
 main:
     xor r8b, r8b
-    xor r9b, r9b
+    xor r9, r9
+    xor r12, r12
+    xor r13, r13        ;just to make sure registers are null
 
 promptWord:
     mov rax, 1
@@ -40,15 +42,14 @@ promptWord:
     mov rax, 0
     mov rdi, 0
     mov rsi, string
-    mov rdx, 64
+    mov rdx, 100
     syscall
 
-;something weird below
 checkWord:
-    dec rax ;for new line key
-    cmp rax, 8 ;this is the size
-    jl  promptWord
-    mov r12, rax ;can you move this into something?
+    dec rax             ;for new line key
+    cmp rax, 8          ;this is the size
+    jle  promptWord
+    mov r12, rax        ;can you move this into something?
 
 promptNum:
     mov rax, 1
@@ -60,14 +61,11 @@ promptNum:
     mov rax, 0
     mov rdi, 0
     mov rsi, num
-    mov rdx, 2
+    mov rdx, 3
     syscall
 
-; be careful of memory allocated, mov to r8 and 10 to al or vice versa
-; not enough memory allocated, 
-; be mindful of what number you read first and if there should be a check for the next number
 checkNum:
-    xor r9b, r9b
+    xor r9b, r9b        ;resetting to count the characters
     mov r10, num
     dec rax
     cmp rax, 1
@@ -75,12 +73,12 @@ checkNum:
     jmp convertNumSingle
 
 convertNumDouble:
-    mov r8b, [r10] ;moving to empty register
+    mov r8b, [r10]      ;moving to empty register
     sub r8b, 48
     mov al, 10
     mul r8
-    add r9, rax ;r9 stores temp number
-    inc r10 ;moving to next digit
+    add r9, rax         ;r9 stores temp number
+    inc r10             ;moving to next digit
 
 convertNumSingle:
     mov r8b, [r10]
@@ -88,8 +86,10 @@ convertNumSingle:
     add r9b, r8b
     cmp r9b, 2
     jl promptNum
-    cmp r9b, r12b ;can you do this?
+    cmp r9b, r12b
     jg promptNum
+    dec r9b             ;this makes it print "correctly" - but it doesn't for the last one - fix that
+
 
 printUnedited:
     mov rax, 1
@@ -113,17 +113,17 @@ printEdited:
 
     mov r8b, r9b
     mov r13, string
-    add r13, r9         ;r9 instead of r9b to match operands
+    add r13, r9         ;i wanted to do r9b but it won't let me
 
 printChar1:
-    mov rax, 1          ;this part prints the first reversed part
+    mov rax, 1
     mov rdi, 1
     mov rsi, r13
-    mov rdx, 1          ;prints only one byte aka one character
+    mov rdx, 1
     syscall
 
 moveThrough1:
-    dec r13             ;this part moves through the first reversed part to print a character at a time
+    dec r13
     dec r8b
     cmp r8b, 0          ;1 & not 0, bc it'll print char one more time after jumping
     jge printChar1      ;if no jump, move to end
@@ -132,11 +132,12 @@ moveThrough1:
     cmp r8b, r9b        ;comparing first in case the entire string is reversed - because if the size of the string is input, entire string is reversed as one
     je printNewLine
 
+
 printChar2:
     mov rax, 1
     mov rdi, 1
     mov rsi, r13
-    mov rdx, 1        
+    mov rdx, 1          ;prints only one byte aka one character
     syscall
 
 moveThrough2:
@@ -151,6 +152,7 @@ printNewLine:
     mov rsi, newLine
     mov rdx, 1
     syscall
+
 
 exit:
     mov rax, 60
