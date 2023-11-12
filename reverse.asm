@@ -1,5 +1,9 @@
 ;Sandra Deutl and Katheryne Lochart
 ;CMSC313 Project 3
+;This code asks the user for a string (>8 chars) and a number (>2 && <= string length)
+;and then prints two reversed sections of the string starting from that number
+
+;Note: if the number is the length of the string, the reversed section(s) will be the reversed string as a whole and that's it, because the number is where the reversing starts
 
 section .data
 
@@ -152,7 +156,6 @@ printNewLine:
     mov rsi, newLine
     mov rdx, 1
     syscall
-
 
 exit:
     mov rax, 60
